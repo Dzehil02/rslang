@@ -27,18 +27,17 @@ class TextBook extends React.Component {
     async handleClickSection(numberSection) {
       await this.setState({currentGroup: numberSection});
       await this.getWords(this.state.currentGroup);
-      console.log(this.state.currentGroup);
     }
 
    render(){
       return (
-         <main class="page">
-              <section class="page__cards">
+         <main className="page">
+              <section className="page__cards">
               <SectionsTexbook section={this.level} currentGroup={this.state.currentGroup} handleClickSection={this.handleClickSection} />
-                 <div class="page__number-book">11</div>
-                 <div class="page__left-arrow"><img src={arrowLeft} alt="left-arrow"/></div>
-                 <div class="page__right-arrow"><img src={arrowRight} alt="right-arrow"/></div>
-                 <div class="_container">
+                 <div className="page__number-book">11</div>
+                 <div className="page__left-arrow"><img src={arrowLeft} alt="left-arrow"/></div>
+                 <div className="page__right-arrow"><img src={arrowRight} alt="right-arrow"/></div>
+                 <div className="_container">
                  <TextbookCards currentGroup={this.state.currentGroup}   words={this.state.character} />
                  </div>
               </section>
