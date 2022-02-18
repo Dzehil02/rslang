@@ -3,21 +3,10 @@ import arrowLeft from '../../assets/left-arrow.svg';
 import arrowRight from '../../assets/right-arrow.svg';
 import { getWords } from "../../API";
 import SectionsTexbook from './texbookComponents/SectionsTextbook';
-import TextbookCards from './texbookComponents/TextbookCards'
-
-export function addStyleOnPage () {
-   const page = document.querySelector('.page__cards')
-   const numberPage = document.querySelector('.page__number-book')
-   page.classList.add('card__page-study')
-   numberPage.classList.add('card__page-study')
-}
-
-export function removeStyleOnPage () {
-   const page = document.querySelector('.page__cards')
-   const numberPage = document.querySelector('.page__number-book')
-   page.classList.remove('card__page-study')
-   numberPage.classList.remove('card__page-study')
-}
+import TextbookCards from './texbookComponents/TextbookCards';
+import Preloader from '../Preloader';
+import RightArrow from './texbookComponents/RightArrow';
+import LeftArrow from './texbookComponents/LeftArrow';
 
 class TextBook extends React.Component {
    constructor() {
@@ -32,33 +21,76 @@ class TextBook extends React.Component {
       this.level = ['0 - Elementary', '1 - Pre-Intermediate', '2 - Intermediate', '3 - Upper-Intermediate', '4 - Advanced', '5 - Proficiency' ]
       this.handleClickSection = this.handleClickSection.bind(this);
       this.getWords = getWords.bind(this);
+      this.handleClickPageNext = this.handleClickPageNext.bind(this);
+      this.handleClickPagePrev = this.handleClickPagePrev.bind(this);
+      this.playAudio = this.playAudio.bind(this);
     }
 
     componentDidMount(){
-      this.getWords(this.state.currentGroup);
+      this.getWords(this.state.currentGroup, this.state.currentPage);
     }
 
-    async handleClickSection(numberSection) {
-      await this.setState({currentGroup: numberSection});
-      await this.getWords(this.state.currentGroup);
+   async handleClickSection(numberSection) {
+      await this.setState({currentGroup: numberSection, currentPage: 0});
+      await this.getWords(this.state.currentGroup, this.state.currentPage);
+      //console.log(this.state.currentGroup);
+    }
+
+   async handleClickPageNext() {
+      await this.setState(prevState => {
+         if(prevState.currentPage > 28){
+            prevState.currentPage = 28
+         }
+         return {
+            currentPage: prevState.currentPage + 1
+         }
+      });
+      await this.getWords(this.state.currentGroup, this.state.currentPage);
+   }
+
+    async handleClickPagePrev() {
+      await this.setState(prevState => {
+          if(prevState.currentPage < 1){
+            prevState.currentPage = 1
+         }
+         return {
+            currentPage: prevState.currentPage - 1
+         }
+      });
+      await this.getWords(this.state.currentGroup, this.state.currentPage);
+    }
+
+    playAudio(playlist){
+
+      playlist[0].play();
+      for(let i = 0; i < playlist.length; i++){
+         playlist[i].addEventListener('ended', () => {
+            if(playlist[i].duration === playlist[i].currentTime ){
+               if(i < playlist.length - 1){
+                  playlist[i + 1].play();
+               }
+            }else return
+         })
+      }
     }
 
    render(){
+      // console.log('group:  ', this.state.currentGroup ,'page: ', this.state.currentPage);
       return (
          <main className="page">
-              <section className="page__cards">
-              <SectionsTexbook section={this.level} currentGroup={this.state.currentGroup} handleClickSection={this.handleClickSection} />
-                 <div className="page__number-book">11</div>
-                 <div className="page__left-arrow"><img src={arrowLeft} alt="left-arrow"/></div>
-                 <div className="page__right-arrow"><img src={arrowRight} alt="right-arrow"/></div>
-                 <div className="_container">
-                 <TextbookCards currentGroup={this.state.currentGroup}   words={this.state.character} />
-                 </div>
-              </section>
-           </main>
-       );
+               <section className="page__cards">
+                  <SectionsTexbook section={this.level} currentGroup={this.state.currentGroup} handleClickSection={this.handleClickSection} />
+                  <div className="page__number-book">{this.state.currentPage + 1} / {this.maxPage}</div>
+                  <LeftArrow image={arrowLeft} handleClickPagePrev={this.handleClickPagePrev} numberPage={this.state.currentPage}/>
+                  <RightArrow image={arrowRight} handleClickPageNext={this.handleClickPageNext} numberPage={this.state.currentPage}/>
+                  <div className="_container">
+                     <TextbookCards words={this.state.character} playAudio={this.playAudio} />
+                  </div>
+               </section>
+               {this.state.loading && <Preloader loading={this.loading} />}
+         </main>
+      );
    }
-  
 };
 
 export default TextBook;
