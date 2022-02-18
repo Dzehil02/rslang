@@ -305,16 +305,67 @@ body {
    width: 390px;
    height:260px;
    margin-top: 80px;
-position: relative;
-background-position: center;
+   position: relative;
+   background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
     background-color: rgba(0, 0, 0, 0.85);
     background-blend-mode: multiply;
 }
 
+.card__page-study {
+   box-shadow: 0px 0px 15px 8px rgb(79, 116, 210);
+}
+
+.card__column-study {
+   box-shadow: 0px 0px 15px 8px rgb(79, 116, 210);
+}
+
+.card__column-difficult {
+   box-shadow: 0px 0px 15px 8px rgba(191, 23, 23, 0.45);
+}
+
 .card__column:nth-child(2n-1) {
    margin-right: 40px;
+}
+
+.card__btns {
+   position: absolute;
+   right: 0;
+   bottom: 0;
+}
+
+.card__btn {
+   border-radius: 3px 3px 0px 0px;
+   margin: 0px 5px 0px 10px;
+   cursor: pointer;
+   width: 20px;
+   height: 40px;
+   z-index: 10;
+}
+
+.card__btn-red {
+   background: #C7122D;
+}
+
+.card__btn-blue {
+   background: #40C2B3;
+}
+
+.btnActiveRed {
+   background: #e2354f;
+}
+
+.btnActiveBlue {
+   background: #336bac;
+}
+
+.card__btn-red:hover {
+   background: #e2354f;
+}
+
+.card__btn-blue:hover {
+   background: #336bac;
 }
 
 .card__img {
@@ -385,6 +436,7 @@ background-position: center;
    color: #fff;
    font-size: 64px;
    font-weight: 600;
+   z-index: 50;
 }
 
 .chapter-select {

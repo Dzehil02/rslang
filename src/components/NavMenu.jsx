@@ -24,7 +24,7 @@ const NavMenu = () => {
       setNickName('')
       setDictionary('')
     }
-  }, [isAuth])
+  }, [isAuth, setIsAuth])
 
   function changeBtn() {
     if (isAuth) {

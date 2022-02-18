@@ -5,6 +5,20 @@ import { getWords } from "../../API";
 import SectionsTexbook from './texbookComponents/SectionsTextbook';
 import TextbookCards from './texbookComponents/TextbookCards'
 
+export function addStyleOnPage () {
+   const page = document.querySelector('.page__cards')
+   const numberPage = document.querySelector('.page__number-book')
+   page.classList.add('card__page-study')
+   numberPage.classList.add('card__page-study')
+}
+
+export function removeStyleOnPage () {
+   const page = document.querySelector('.page__cards')
+   const numberPage = document.querySelector('.page__number-book')
+   page.classList.remove('card__page-study')
+   numberPage.classList.remove('card__page-study')
+}
+
 class TextBook extends React.Component {
    constructor() {
       super()
