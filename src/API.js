@@ -24,8 +24,6 @@ export const createUser = async user => {
   
   };
 
-// createUser({ "email": "hello22@user.com", "password": "Gfhjkm_12322" });
-
 export const loginUser = async user => {
   try {
     const rawResponse = await fetch('https://learnwords-reslang.herokuapp.com/signin', {
@@ -44,8 +42,6 @@ export const loginUser = async user => {
   }
     
   };
-  
-//   loginUser({ "email": "hello22@user.com", "password": "Gfhjkm_12322" });
 
 export const getUserId = async ({ userId, token }) => {
   try {
@@ -66,9 +62,7 @@ export const getUserId = async ({ userId, token }) => {
 
 };
 
-  const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyMDU5MzNhMjM4YTI2MDAxNjI4N2RjNyIsImlhdCI6MTY0NDUzMjY0MCwiZXhwIjoxNjQ0NTQ3MDQwfQ.0JBzCgjy1bS0Z7xTVGcqOJ5QEpMGKBZ-iynHmBMKJ5s';
-
-  const createUserWord = async ({ userId, wordId, word }) => {
+  export const createUserWord = async ({ userId, wordId, token, word }) => {
     const rawResponse = await fetch(`https://learnwords-reslang.herokuapp.com/users/${userId}/words/${wordId}`, {
       method: 'POST',
       withCredentials: true,
@@ -84,47 +78,80 @@ export const getUserId = async ({ userId, token }) => {
     console.log(content);
   };
   
-//   createUserWord({
-//     userId: "6205933a238a260016287dc7",
-//     wordId: "5e9f5ee35eb9e72bc21af714",
-//     word: { "difficulty": "weather", "optional": {testFieldString: 'test', testFieldBoolean: false} }
-//   });
+export const getUserWord = async ({ userId, wordId, token }) => {
+  const rawResponse = await fetch(`https://learnwords-reslang.herokuapp.com/users/${userId}/words/${wordId}`, {
+    method: 'GET',
+    withCredentials: true,
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'Accept': 'application/json',
+    }
+  });
+  const content = await rawResponse.json();
 
-//   Console: {
-//     "id":"5ec9a92acbbd77001736b167",
-//     "difficulty":"weak",
-//     "optional":{
-//       "testFieldString":"test",
-//       "testFieldBoolean":true
-//     },
-//     "wordId":"5e9f5ee35eb9e72bc21af716"
-//   }
-  
-  const getUserWord = async ({ userId, wordId }) => {
-    const rawResponse = await fetch(`https://learnwords-reslang.herokuapp.com/users/${userId}/words/${wordId}`, {
-      method: 'GET',
+  console.log(content);
+};
+
+export const getStatistics = async (userId, token) => {
+  const rawResponse = await fetch(
+    `https://learnwords-reslang.herokuapp.com/users/${userId}/statistics`,
+    {
+      method: "GET",
       withCredentials: true,
       headers: {
-        'Authorization': `Bearer ${token}`,
-        'Accept': 'application/json',
-      }
-    });
-    const content = await rawResponse.json();
-  
-    console.log(content);
-  };
-  
-//   getUserWord({
-//     userId: "6205933a238a260016287dc7",
-//     wordId: "5e9f5ee35eb9e72bc21af714"
-//   });
+        Authorization: `Bearer ${token}`,
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    }
+  );
+  const content = await rawResponse.json();
+  return content;
+};
 
-//   Console: {
-//     "id":"5ec9a92acbbd77001736b167",
-//     "difficulty":"weak",
-//     "optional":{
-//       "testFieldString":"test",
-//       "testFieldBoolean":true
-//     },
-//     "wordId":"5e9f5ee35eb9e72bc21af716"
-//   }
+export const putStatistics = async (userId, token, body) => {
+  await fetch(`https://learnwords-reslang.herokuapp.com/users/${userId}/statistics`, {
+    method: "PUT",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(body),
+  });
+};
+
+
+export const getUserWords = async ({ userId, token }) => {
+  const rawResponse = await fetch(`https://learnwords-reslang.herokuapp.com/users/${userId}/words`, {
+    method: 'GET',
+    withCredentials: true,
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'Accept': 'application/json',
+    }
+  });
+  const content = await rawResponse.json();
+  return content
+};
+
+export const getWordId = async (wordId) => {
+  try {
+    const rawResponse = await fetch(`https://learnwords-reslang.herokuapp.com/words/${wordId}`);
+    const content = await rawResponse.json();
+    return content;
+  } catch (e) {
+    console.log('Слово не найдено.')
+  }
+
+};
+
+export const removeUserWord = async ({ userId, wordId, token }) => {
+  const rawResponse = await fetch(`https://learnwords-reslang.herokuapp.com/users/${userId}/words/${wordId}`, {
+    method: 'DELETE',
+    headers: {
+      'Authorization': `Bearer ${token}`
+    }
+  });
+  return rawResponse.json();
+};

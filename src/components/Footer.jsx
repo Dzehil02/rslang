@@ -6,11 +6,14 @@ const Footer = () => {
       <div className='footer__top _container'>
         <div>
           <div className='footer__label'>
-            <img
+            <a href="https://rs.school/" target='blank'>
+              <img
               className='footer__logo-rs'
               src={require("../assets/rs_png.png")}
               alt='RS_school'
             ></img>
+            </a>
+            
           </div>
         </div>
         <div>
@@ -18,18 +21,18 @@ const Footer = () => {
         </div>
         <div className='footer__github-list'>
           <div className='footer__label footer__github-item'>
-            <a href='#/' className='menu__link'>
-              Github_1
+            <a target='blank' href='https://github.com/Dzehil02' className='menu__link'>
+              Dzehil02
             </a>
           </div>
           <div className='footer__label footer__github-item'>
-            <a href='#/' className='menu__link'>
-              Github_2
+            <a target='blank' href='https://github.com/Fespis' className='menu__link'>
+            Fespis
             </a>
           </div>
           <div className='footer__label footer__github-item'>
-            <a href='#/' className='menu__link'>
-              Github_3
+            <a target='blank' href='https://github.com/Evgeniy37529' className='menu__link'>
+            Evgeniy37529
             </a>
           </div>
         </div>
